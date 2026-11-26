@@ -14,4 +14,8 @@ public interface IHabitService
     Task<bool> UpdateAsync(int id, UpdateHabitDTO dto);
 
     Task<bool> DeleteAsync(int id);
+
+    Task<bool> CompleteTodayAsync(int id);
+
+    Task<bool> UndoTodayAsync(int id);
 }

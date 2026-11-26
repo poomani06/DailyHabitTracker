@@ -74,4 +74,25 @@ public class HabitsController : ControllerBase
 
         return NoContent();
     }
+    [HttpPost("{id:int}/complete")]
+    public async Task<IActionResult> CompleteToday(int id)
+    {
+        var completed = await _service.CompleteTodayAsync(id);
+
+        if (!completed)
+            return NotFound(new { message = "Habit not found." });
+
+        return Ok(new { message = "Habit completed successfully." });
+    }
+
+    [HttpDelete("{id:int}/complete")]
+    public async Task<IActionResult> UndoToday(int id)
+    {
+        var undone = await _service.UndoTodayAsync(id);
+
+        if (!undone)
+            return NotFound(new { message = "Habit not found." });
+
+        return Ok(new { message = "Habit completion undone successfully." });
+    }
 }

@@ -46,6 +46,58 @@ namespace DailyHabitTracker.Migrations
 
                     b.ToTable("Habits");
                 });
+
+            modelBuilder.Entity("DailyHabitTracker.API.Models.HabitRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("CompletedDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("HabitId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("HabitRecordId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HabitRecordId");
+
+                    b.HasIndex("HabitId", "CompletedDate")
+                        .IsUnique();
+
+                    b.ToTable("HabitRecords");
+                });
+
+            modelBuilder.Entity("DailyHabitTracker.API.Models.HabitRecord", b =>
+                {
+                    b.HasOne("DailyHabitTracker.API.Models.Habit", "Habit")
+                        .WithMany("HabitRecords")
+                        .HasForeignKey("HabitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DailyHabitTracker.API.Models.HabitRecord", null)
+                        .WithMany("HabitRecords")
+                        .HasForeignKey("HabitRecordId");
+
+                    b.Navigation("Habit");
+                });
+
+            modelBuilder.Entity("DailyHabitTracker.API.Models.Habit", b =>
+                {
+                    b.Navigation("HabitRecords");
+                });
+
+            modelBuilder.Entity("DailyHabitTracker.API.Models.HabitRecord", b =>
+                {
+                    b.Navigation("HabitRecords");
+                });
 #pragma warning restore 612, 618
         }
     }

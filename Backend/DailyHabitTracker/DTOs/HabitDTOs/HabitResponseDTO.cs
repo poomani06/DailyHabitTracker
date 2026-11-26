@@ -10,4 +10,6 @@ public class HabitResponseDTO
     public string? Description { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    public bool IsCompletedToday { get; set; }
 }

@@ -14,4 +14,11 @@ public interface IHabitRepository
     Task UpdateAsync(Habit habit);
 
     Task DeleteAsync(Habit habit);
+    Task<List<int>> GetCompletedHabitIdsAsync(DateOnly date);
+
+    Task<bool> IsCompletedAsync(int habitId, DateOnly date);
+
+    Task AddRecordAsync(HabitRecord record);
+
+    Task RemoveRecordAsync(int habitId, DateOnly date);
 }

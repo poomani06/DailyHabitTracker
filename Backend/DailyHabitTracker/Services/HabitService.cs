@@ -19,7 +19,18 @@ public class HabitService : IHabitService
     {
         var habits = await _repository.GetAllAsync();
 
-        return habits.Select(MapToDTO).ToList();
+        var today = DateOnly.FromDateTime(DateTime.Today);
+
+        var completedIds = await _repository.GetCompletedHabitIdsAsync(today);
+
+        return habits.Select(habit => new HabitResponseDTO
+        {
+            Id = habit.Id,
+            Name = habit.Name,
+            Description = habit.Description,
+            CreatedAt = habit.CreatedAt,
+            IsCompletedToday = completedIds.Contains(habit.Id)
+        }).ToList();
     }
 
     public async Task<HabitResponseDTO?> GetByIdAsync(int id)
@@ -80,4 +91,43 @@ public class HabitService : IHabitService
             CreatedAt = habit.CreatedAt
         };
     }
+    public async Task<bool> CompleteTodayAsync(int id)
+{
+    var habit = await _repository.GetByIdAsync(id);
+
+    if (habit == null)
+        return false;
+
+    var today = DateOnly.FromDateTime(DateTime.Today);
+
+    var alreadyCompleted = await _repository.IsCompletedAsync(id, today);
+
+    if (!alreadyCompleted)
+    {
+        var record = new HabitRecord
+        {
+            HabitId = id,
+            CompletedDate = today
+        };
+
+        await _repository.AddRecordAsync(record);
+    }
+
+    return true;
+}
+
+public async Task<bool> UndoTodayAsync(int id)
+{
+    var habit = await _repository.GetByIdAsync(id);
+
+    if (habit == null)
+        return false;
+
+    var today = DateOnly.FromDateTime(DateTime.Today);
+
+    await _repository.RemoveRecordAsync(id, today);
+
+    return true;
+}
+    
 }

@@ -47,4 +47,37 @@ public class HabitRepository : IHabitRepository
         _context.Habits.Remove(habit);
         await _context.SaveChangesAsync();
     }
+    public async Task<List<int>> GetCompletedHabitIdsAsync(DateOnly date)
+    {
+        return await _context.HabitRecords
+            .Where(record => record.CompletedDate == date)
+            .Select(record => record.HabitId)
+            .ToListAsync();
+    }
+
+    public async Task<bool> IsCompletedAsync(int habitId, DateOnly date)
+    {
+        return await _context.HabitRecords.AnyAsync(record =>
+            record.HabitId == habitId &&
+            record.CompletedDate == date);
+    }
+
+    public async Task AddRecordAsync(HabitRecord record)
+    {
+        await _context.HabitRecords.AddAsync(record);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task RemoveRecordAsync(int habitId, DateOnly date)
+    {
+        var record = await _context.HabitRecords.FirstOrDefaultAsync(record =>
+            record.HabitId == habitId &&
+            record.CompletedDate == date);
+
+        if (record != null)
+        {
+            _context.HabitRecords.Remove(record);
+            await _context.SaveChangesAsync();
+        }
+    }
 }
