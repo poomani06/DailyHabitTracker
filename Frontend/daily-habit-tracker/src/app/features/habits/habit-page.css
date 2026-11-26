@@ -26,3 +26,30 @@
   border-color: #86b7fe;
   box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
 }
+.habit-status {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #adb5bd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #adb5bd;
+  flex-shrink: 0;
+}
+
+.habit-status.completed {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+  font-weight: bold;
+}
+
+.habit-item {
+  transition: all 0.2s ease;
+}
+
+.habit-item:hover {
+  transform: translateY(-2px);
+}

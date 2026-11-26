@@ -130,31 +130,84 @@
 
           @for (habit of habits; track habit.id) {
 
-            <div class="habit-item d-flex align-items-center
-                        justify-content-between gap-3 p-3 mb-3">
+            <div class="habit-item d-flex align-items-center justify-content-between gap-3 p-3 mb-3">
 
-              <div class="flex-grow-1">
+              <div class="d-flex align-items-center gap-3 flex-grow-1">
 
-                <h6 class="fw-bold mb-1">
-                  {{ habit.name }}
-                </h6>
+                <div class="habit-status"
+                    [class.completed]="habit.isCompletedToday">
 
-                <p class="text-secondary small mb-1">
-                  {{ habit.description || 'No description' }}
-                </p>
+                  @if (habit.isCompletedToday) {
+                    ✓
+                  } @else {
+                    ○
+                  }
 
-                <small class="text-secondary">
-                  Created:
-                  {{ habit.createdAt | date:'mediumDate' }}
-                </small>
+                </div>
+
+                <div class="flex-grow-1">
+
+                  <h6 class="fw-bold mb-1"
+                      [class.text-decoration-line-through]="habit.isCompletedToday">
+
+                    {{ habit.name }}
+
+                  </h6>
+
+                  <p class="text-secondary small mb-1">
+                    {{ habit.description || 'No description' }}
+                  </p>
+
+                  <small class="text-secondary">
+                    Created: {{ habit.createdAt | date:'mediumDate' }}
+                  </small>
+
+                  @if (habit.isCompletedToday) {
+                    <div class="small text-success fw-semibold mt-1">
+                      Completed today
+                    </div>
+                  } @else {
+                    <div class="small text-secondary mt-1">
+                      Not completed yet
+                    </div>
+                  }
+
+                </div>
 
               </div>
 
-              <div class="d-flex gap-2">
+              <div class="d-flex flex-wrap gap-2">
+
+                @if (habit.isCompletedToday) {
+
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-success"
+                    [disabled]="loading"
+                    (click)="undoHabit(habit.id)">
+
+                    Undo
+
+                  </button>
+
+                } @else {
+
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-success"
+                    [disabled]="loading"
+                    (click)="completeHabit(habit.id)">
+
+                    Mark Complete
+
+                  </button>
+
+                }
 
                 <button
-                  class="btn btn-sm btn-outline-primary"
                   type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  [disabled]="loading"
                   (click)="editHabit(habit)">
 
                   Edit
@@ -162,8 +215,9 @@
                 </button>
 
                 <button
-                  class="btn btn-sm btn-outline-danger"
                   type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  [disabled]="loading"
                   (click)="deleteHabit(habit.id)">
 
                   Delete

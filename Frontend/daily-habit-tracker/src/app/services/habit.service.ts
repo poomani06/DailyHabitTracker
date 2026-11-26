@@ -1,20 +1,16 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import {
-  Habit,
-  CreateHabit,
-  UpdateHabit
-} from '../models/habit';
+import { Habit, CreateHabit, UpdateHabit } from '../models/habit';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HabitService {
 
-  private apiUrl = 'https://localhost:7001/api/habits';
+  private apiUrl = `${environment.apiUrl}/habits`;
 
   constructor(private http: HttpClient) {}
 
@@ -31,15 +27,22 @@ export class HabitService {
   }
 
   update(id: number, habit: UpdateHabit): Observable<void> {
-    return this.http.put<void>(
-      `${this.apiUrl}/${id}`,
-      habit
-    );
+    return this.http.put<void>(`${this.apiUrl}/${id}`, habit);
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(
-      `${this.apiUrl}/${id}`
-    );
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  completeToday(id: number): Observable<{ message: string }> {
+  return this.http.post<{ message: string }>(
+    `${this.apiUrl}/${id}/complete`,
+    {}
+  );
+}
+
+undoToday(id: number): Observable<{ message: string }> {
+  return this.http.delete<{ message: string }>(
+    `${this.apiUrl}/${id}/complete`
+  );
+}
 }

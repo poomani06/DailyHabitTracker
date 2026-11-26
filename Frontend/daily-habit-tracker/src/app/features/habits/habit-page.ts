@@ -130,4 +130,35 @@ export class HabitPage implements OnInit {
     this.habitDescription = '';
     this.editingId = null;
   }
+  completeHabit(id: number): void {
+  this.loading = true;
+  this.errorMessage = '';
+
+  this.habitService.completeToday(id).subscribe({
+    next: () => {
+      this.successMessage = 'Habit completed successfully.';
+      this.loadHabits();
+    },
+    error: () => {
+      this.errorMessage = 'Unable to complete habit.';
+      this.loading = false;
+    }
+  });
+}
+
+undoHabit(id: number): void {
+  this.loading = true;
+  this.errorMessage = '';
+
+  this.habitService.undoToday(id).subscribe({
+    next: () => {
+      this.successMessage = 'Habit completion undone.';
+      this.loadHabits();
+    },
+    error: () => {
+      this.errorMessage = 'Unable to undo habit completion.';
+      this.loading = false;
+    }
+  });
+}
 }

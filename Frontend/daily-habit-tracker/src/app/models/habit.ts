@@ -4,6 +4,7 @@ export interface Habit {
   name: string;
   description: string | null;
   createdAt: string;
+  isCompletedToday: boolean;
 }
 
 export interface CreateHabit {
