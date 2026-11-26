@@ -1,0 +1,186 @@
+
+<div class="container-fluid py-4">
+
+  <div class="row mb-4 align-items-center">
+    <div class="col">
+      <h1 class="fw-bold mb-1">My Habits</h1>
+      <p class="text-secondary mb-0">
+        Build better habits, one day at a time.
+      </p>
+    </div>
+
+    <div class="col-auto">
+      <span class="badge text-bg-primary fs-6">
+        {{ habits.length }} Habits
+      </span>
+    </div>
+  </div>
+
+  @if (successMessage) {
+    <div class="alert alert-success alert-dismissible">
+      {{ successMessage }}
+      <button type="button" class="btn-close"
+        (click)="successMessage = ''"></button>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="alert alert-danger alert-dismissible">
+      {{ errorMessage }}
+      <button type="button" class="btn-close"
+        (click)="errorMessage = ''"></button>
+    </div>
+  }
+
+  <div class="row g-4">
+
+    <!-- Habit Form -->
+    <div class="col-lg-4">
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+          <h5 class="fw-bold mb-3">
+            {{ editingId ? 'Edit Habit' : 'Add New Habit' }}
+          </h5>
+
+          <form (ngSubmit)="saveHabit()">
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                Habit Name
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                name="habitName"
+                [(ngModel)]="habitName"
+                placeholder="e.g. Drink Water"
+                maxlength="100"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                Description
+              </label>
+
+              <textarea
+                class="form-control"
+                name="habitDescription"
+                [(ngModel)]="habitDescription"
+                rows="3"
+                maxlength="500"
+                placeholder="Write a short description">
+              </textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary w-100"
+              [disabled]="loading || !habitName.trim()">
+
+              {{ editingId ? 'Update Habit' : 'Add Habit' }}
+
+            </button>
+
+            @if (editingId !== null) {
+              <button
+                type="button"
+                class="btn btn-outline-secondary w-100 mt-2"
+                (click)="resetForm()">
+
+                Cancel
+
+              </button>
+            }
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Habit List -->
+    <div class="col-lg-8">
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+          <h5 class="fw-bold mb-4">All Habits</h5>
+
+          @if (loading) {
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary"></div>
+              <p class="text-secondary mt-2">Loading habits...</p>
+            </div>
+          }
+
+          @if (!loading && habits.length === 0) {
+            <div class="text-center py-5">
+              <h5>No habits yet</h5>
+              <p class="text-secondary">
+                Start by creating your first habit.
+              </p>
+            </div>
+          }
+
+          @for (habit of habits; track habit.id) {
+
+            <div class="habit-item d-flex align-items-center
+                        justify-content-between gap-3 p-3 mb-3">
+
+              <div class="flex-grow-1">
+
+                <h6 class="fw-bold mb-1">
+                  {{ habit.name }}
+                </h6>
+
+                <p class="text-secondary small mb-1">
+                  {{ habit.description || 'No description' }}
+                </p>
+
+                <small class="text-secondary">
+                  Created:
+                  {{ habit.createdAt | date:'mediumDate' }}
+                </small>
+
+              </div>
+
+              <div class="d-flex gap-2">
+
+                <button
+                  class="btn btn-sm btn-outline-primary"
+                  type="button"
+                  (click)="editHabit(habit)">
+
+                  Edit
+
+                </button>
+
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  type="button"
+                  (click)="deleteHabit(habit.id)">
+
+                  Delete
+
+                </button>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
