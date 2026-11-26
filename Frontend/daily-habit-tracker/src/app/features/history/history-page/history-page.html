@@ -1,0 +1,78 @@
+
+<div class="container-fluid py-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="fw-bold mb-1">Habit History</h1>
+      <p class="text-secondary mb-0">
+        Track your completed habits and past activity.
+      </p>
+    </div>
+
+    <a routerLink="/habits" class="btn btn-outline-primary">
+      Back to My Habits
+    </a>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="fw-bold mb-0">Completed Activities</h5>
+
+        <span class="badge text-bg-success">
+          {{ history.length }} Records
+        </span>
+      </div>
+
+      @if (loading) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary"></div>
+          <p class="text-secondary mt-2">Loading history...</p>
+        </div>
+      }
+
+      @if (!loading && errorMessage) {
+        <div class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+      }
+
+      @if (!loading && !errorMessage && history.length === 0) {
+        <div class="text-center py-5">
+          <h5>No history available</h5>
+          <p class="text-secondary">
+            Complete a habit to see your activity here.
+          </p>
+          <a routerLink="/habits" class="btn btn-primary">
+            Go to My Habits
+          </a>
+        </div>
+      }
+
+      @if (!loading && history.length > 0) {
+        @for (record of history; track record.id) {
+          <div class="d-flex align-items-center justify-content-between p-3 mb-3 border rounded">
+
+            <div>
+              <h6 class="fw-bold mb-1">
+                {{ record.habitName }}
+              </h6>
+
+              <small class="text-secondary">
+                {{ record.completedDate | date:'fullDate' }}
+              </small>
+            </div>
+
+            <span class="badge text-bg-success">
+              Completed
+            </span>
+
+          </div>
+        }
+      }
+
+    </div>
+  </div>
+
+</div>

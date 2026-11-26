@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.history-item {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.history-item:hover {
+  background: #f0f5ff;
+  transform: translateY(-2px);
+}
+
+.history-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #198754;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  flex-shrink: 0;
+}

@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { RouterLink } from '@angular/router';
 import {
   Habit,
   CreateHabit
@@ -13,7 +13,7 @@ import { HabitService } from '../../services/habit.service';
 @Component({
   selector: 'app-habit-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './habit-page.html',
   styleUrl: './habit-page.css'
 })

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Habit, CreateHabit, UpdateHabit } from '../models/habit';
+import { Habit, CreateHabit, UpdateHabit, HabitHistory } from '../models/habit';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -43,6 +43,11 @@ export class HabitService {
 undoToday(id: number): Observable<{ message: string }> {
   return this.http.delete<{ message: string }>(
     `${this.apiUrl}/${id}/complete`
+  );
+}
+getHistory(): Observable<HabitHistory[]> {
+  return this.http.get<HabitHistory[]>(
+    `${this.apiUrl}/history`
   );
 }
 }

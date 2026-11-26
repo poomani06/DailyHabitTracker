@@ -16,3 +16,9 @@ export interface UpdateHabit {
   name: string;
   description: string | null;
 }
+export interface HabitHistory {
+  id: number;
+  habitId: number;
+  habitName: string;
+  completedDate: string;
+}
