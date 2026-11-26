@@ -95,4 +95,11 @@ public class HabitsController : ControllerBase
 
         return Ok(new { message = "Habit completion undone successfully." });
     }
+    [HttpGet("history")]
+    public async Task<IActionResult> GetHistory()
+    {
+        var history = await _service.GetHistoryAsync();
+
+        return Ok(history);
+    }
 }

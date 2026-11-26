@@ -18,4 +18,6 @@ public interface IHabitService
     Task<bool> CompleteTodayAsync(int id);
 
     Task<bool> UndoTodayAsync(int id);
+
+    Task<List<HabitHistoryResponseDTO>> GetHistoryAsync();
 }

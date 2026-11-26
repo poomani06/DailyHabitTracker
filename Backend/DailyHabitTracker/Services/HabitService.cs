@@ -129,5 +129,17 @@ public async Task<bool> UndoTodayAsync(int id)
 
     return true;
 }
-    
+    public async Task<List<HabitHistoryResponseDTO>> GetHistoryAsync()
+    {
+        var records = await _repository.GetHistoryAsync();
+
+        return records.Select(record => new HabitHistoryResponseDTO
+        {
+            Id = record.Id,
+            HabitId = record.HabitId,
+            HabitName = record.Habit.Name,
+            CompletedDate = record.CompletedDate
+        }).ToList();
+    }
+
 }

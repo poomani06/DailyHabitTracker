@@ -21,4 +21,6 @@ public interface IHabitRepository
     Task AddRecordAsync(HabitRecord record);
 
     Task RemoveRecordAsync(int habitId, DateOnly date);
+
+    Task<List<HabitRecord>> GetHistoryAsync();
 }
